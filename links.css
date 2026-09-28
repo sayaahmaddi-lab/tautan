@@ -6,3 +6,4 @@
 .card-tools,.card .open-link{position:relative;z-index:1}
 .card h3 a:focus-visible{outline:none}
 .card h3 a:focus-visible::after{outline:3px solid #bfb2f3;outline-offset:-3px;border-radius:10px}
+.load-note{margin:0 0 18px;padding:11px 14px;border:1px solid #ecd9b6;background:#fdf7ea;color:#8a7440;border-radius:8px;font-size:11px;line-height:1.7}
