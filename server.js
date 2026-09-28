@@ -1,9 +1,8 @@
 'use strict';
-const path = require('path');
 const express = require('express');
 const { loadEnv } = require('./lib/env');
 
-loadEnv(path.join(__dirname, '.env'));
+loadEnv(__dirname);
 const { createStore } = require('./lib/store');
 const { sanitizeLink } = require('./lib/validate');
 
