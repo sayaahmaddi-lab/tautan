@@ -17,7 +17,12 @@ const initial = [
  ['SIPD Indonesia','https://sipd.go.id','Buka portal resmi Sistem Informasi Pemerintahan Daerah.','Pekerjaan',false,'▥','#edf2fb','#7897c9']
 ].map((x,i)=>({id:'default-'+i,title:x[0],url:x[1],description:x[2],category:x[3],favorite:x[4],icon:x[5],bg:x[6],color:x[7],created:Date.now()-i*1000}));
 const key='tautan-collection-v1';
-let links=initial, storageFailed=false;
+let links=initial, storageFailed=false, apiMode=false;
+async function apiGet(url){const r=await fetch(url);if(!r.ok)throw Error('HTTP '+r.status);return r.json();}
+async function apiSend(url,method,body){const r=await fetch(url,{method,headers:{'content-type':'application/json'},body:body?JSON.stringify(body):undefined});if(!r.ok)throw Error('HTTP '+r.status);}
+function apiFail(){toast('Database tidak terhubung. Perubahan disimpan sementara di browser.');}
+function persist(item){if(!apiMode)return;apiSend('api/links','POST',item).catch(apiFail);}
+function persistRemove(id){if(!apiMode)return;apiSend('api/links/'+encodeURIComponent(id),'DELETE').catch(apiFail);}
 function validUrl(url){try {return ['http:','https:'].includes(new URL(url).protocol);}catch{return false;}}
 try{const saved=localStorage.getItem(key);if(saved){const data=JSON.parse(saved);if(!Array.isArray(data))throw Error();links=data.filter(x=>x&&typeof x.id==='string'&&typeof x.title==='string'&&typeof x.description==='string'&&categories.some(c=>c.name===x.category)&&(validUrl(x.url)||x.url==='dashboard.html'));}}catch{storageFailed=true;}
 let view='all', category='Semua', editing=null;
@@ -36,7 +41,7 @@ function render(){
  const query=$('#search').value.trim().toLocaleLowerCase('id');let shown=links.filter(x=>(view!=='favorite'||x.favorite)&&(category==='Semua'||x.category===category)&&[x.title,x.url,x.description].join(' ').toLocaleLowerCase('id').includes(query));
  const sort=view==='recent'?'new':$('#sort').value;shown.sort((a,b)=>sort==='az'?a.title.localeCompare(b.title,'id'):sort==='old'?a.created-b.created:b.created-a.created);$('#sort').disabled=view==='recent';$('#result-count').textContent=shown.length+' tautan';
  const cards=$('#cards');cards.replaceChildren();$('#empty').hidden=shown.length!==0;
- shown.forEach(item=>{const c=categories.find(c=>c.name===item.category);const card=el('article','card');const top=el('div','card-top');const icon=el('span','site-icon',item.icon||item.title.charAt(0).toUpperCase());icon.style.background=item.bg||c.bg;icon.style.color=item.color||c.color;const tools=el('div','card-tools');const star=el('button','icon-button'+(item.favorite?' favorited':''),item.favorite?'★':'☆');star.setAttribute('aria-label',(item.favorite?'Hapus dari favorit: ':'Favoritkan: ')+item.title);star.setAttribute('aria-pressed',!!item.favorite);star.onclick=()=>{item.favorite=!item.favorite;save();render();};const edit=el('button','icon-button','⋯');edit.setAttribute('aria-label','Edit '+item.title);edit.onclick=()=>openForm(item);tools.append(star,edit);top.append(icon,tools);
+ shown.forEach(item=>{const c=categories.find(c=>c.name===item.category);const card=el('article','card');const top=el('div','card-top');const icon=el('span','site-icon',item.icon||item.title.charAt(0).toUpperCase());icon.style.background=item.bg||c.bg;icon.style.color=item.color||c.color;const tools=el('div','card-tools');const star=el('button','icon-button'+(item.favorite?' favorited':''),item.favorite?'★':'☆');star.setAttribute('aria-label',(item.favorite?'Hapus dari favorit: ':'Favoritkan: ')+item.title);star.setAttribute('aria-pressed',!!item.favorite);star.onclick=()=>{item.favorite=!item.favorite;save();persist(item);render();};const edit=el('button','icon-button','⋯');edit.setAttribute('aria-label','Edit '+item.title);edit.onclick=()=>openForm(item);tools.append(star,edit);top.append(icon,tools);
  const identity=el('div','card-identity');const heading=el('h3');const anchor=el('a','card-link',item.title);anchor.href=item.url;anchor.target='_blank';anchor.rel='noopener noreferrer';heading.append(anchor);const domain=item.url==='dashboard.html'?'Dashboard lokal':new URL(item.url).hostname.replace(/^www\./,'');identity.append(heading,el('span','domain',domain));const bottom=el('div','card-bottom');const badge=el('span','badge',item.category);badge.style.setProperty('--badge-bg',c.bg);badge.style.setProperty('--badge-color',c.color);const open=el('a','open-link','Buka tautan');open.href=item.url;open.target='_blank';open.rel='noopener noreferrer';open.setAttribute('aria-label','Buka '+item.title+' di tab baru');open.append(el('span','','↗'));bottom.append(badge,open);card.append(top,identity,el('p','',item.description||'Tautan tersimpan di koleksi pribadi Anda.'),bottom);cards.append(card);});
  if(shown.length){const add=el('button','add-card');add.append(el('span','','＋'),el('strong','','Ada tautan menarik lainnya?'),el('small','','Tambahkan ke koleksi Anda'));add.onclick=()=>openForm();cards.append(add);}
 }
@@ -45,8 +50,24 @@ $('#today').textContent=new Intl.DateTimeFormat('id-ID',{weekday:'long',day:'num
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;category='Semua';render();});
 $('#search').oninput=render;$('#sort').onchange=render;$('#add-link').onclick=()=>openForm();$('#empty-add').onclick=()=>openForm();$('#close-dialog').onclick=$('#cancel-dialog').onclick=()=>$('#link-dialog').close();
 ['grid','list'].forEach(mode=>$('#'+mode+'-view').onclick=()=>{$('#cards').classList.toggle('list',mode==='list');['grid','list'].forEach(m=>{const b=$('#'+m+'-view');b.classList.toggle('selected',m===mode);b.setAttribute('aria-pressed',m===mode);});});
-const remove=el('button','secondary','Hapus tautan');remove.type='button';remove.style.marginRight='auto';$('#link-form .form-actions').prepend(remove);remove.onclick=()=>{if(editing&&confirm('Hapus tautan ini dari koleksi Anda?')){links=links.filter(x=>x.id!==editing);const ok=save();render();$('#link-dialog').close();if(ok)toast('Tautan dihapus dari koleksi.');}};
+const remove=el('button','secondary','Hapus tautan');remove.type='button';remove.style.marginRight='auto';$('#link-form .form-actions').prepend(remove);remove.onclick=()=>{if(editing&&confirm('Hapus tautan ini dari koleksi Anda?')){links=links.filter(x=>x.id!==editing);const ok=save();persistRemove(editing);render();$('#link-dialog').close();if(ok)toast('Tautan dihapus dari koleksi.');}};
 new MutationObserver(()=>{remove.hidden=!editing;}).observe($('#link-dialog'),{attributes:true,attributeFilter:['open']});
-$('#link-form').onsubmit=e=>{e.preventDefault();const f=e.currentTarget;const title=f.elements.title.value.trim(),url=f.elements.url.value.trim();if(!title||!validUrl(url)){$('#form-error').textContent='Isi nama dan URL http:// atau https:// yang valid.';return;}const data={title,url,description:f.elements.description.value.trim(),category:f.elements.category.value,favorite:f.elements.favorite.checked};if(editing){const item=links.find(x=>x.id===editing);Object.assign(item,data);}else links.unshift({...data,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),created:Date.now()});const ok=save();$('#link-dialog').close();render();if(ok)toast(editing?'Tautan berhasil diperbarui.':'Tautan baru berhasil disimpan.');};
+$('#link-form').onsubmit=e=>{e.preventDefault();const f=e.currentTarget;const title=f.elements.title.value.trim(),url=f.elements.url.value.trim();if(!title||!validUrl(url)){$('#form-error').textContent='Isi nama dan URL http:// atau https:// yang valid.';return;}const data={title,url,description:f.elements.description.value.trim(),category:f.elements.category.value,favorite:f.elements.favorite.checked};let saved;if(editing){saved=links.find(x=>x.id===editing);Object.assign(saved,data);}else{saved={...data,id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),created:Date.now()};links.unshift(saved);}const ok=save();persist(saved);$('#link-dialog').close();render();if(ok)toast(editing?'Tautan berhasil diperbarui.':'Tautan baru berhasil disimpan.');};
 document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)&&!$('#link-dialog').open){e.preventDefault();$('#search').focus();}});
 render();if(storageFailed)toast('Data tersimpan tidak dapat dibaca. Menampilkan koleksi contoh.');
+const normalizeItem=x=>x&&typeof x.id==='string'&&typeof x.title==='string'&&(x.url==='dashboard.html'||validUrl(x.url))?{id:x.id,title:x.title,url:x.url,description:typeof x.description==='string'?x.description:'',category:categories.some(c=>c.name===x.category)?x.category:'Lainnya',favorite:!!x.favorite,icon:x.icon||'',bg:x.bg||'',color:x.color||'',created:Number(x.created)||Date.now()}:null;
+function updateStorageLabel(status){const label=$('#storage-label');if(!label)return;const info=$('#storage-info');if(apiMode&&status&&status.engine==='neon'){label.textContent='Tersimpan di database Neon';if(info)info.title='Setiap perubahan langsung disimpan ke database Neon.';}else if(apiMode){label.textContent='Tersimpan di server';if(info)info.title='Setiap perubahan disimpan di penyimpanan server.';}else{label.textContent='Tersimpan di browser Anda';if(info)info.title='Data tersimpan hanya di perangkat dan browser ini.';}}
+async function initStorage(){
+ let status=null;
+ try{status=await apiGet('api/status');}catch{}
+ try{
+  const rows=await apiGet('api/links');
+  if(!Array.isArray(rows))throw Error();
+  const remote=rows.map(normalizeItem).filter(Boolean);
+  if(remote.length){links=remote;}
+  else{for(const item of links){await apiSend('api/links','POST',item);}toast('Koleksi Anda disalin ke '+(status&&status.engine==='neon'?'database Neon':'server')+'.');}
+  apiMode=true;save();render();
+ }catch{apiMode=false;}
+ updateStorageLabel(status);
+}
+initStorage();

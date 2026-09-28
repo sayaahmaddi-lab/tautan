@@ -19,12 +19,22 @@ CARA MENGGUNAKAN
 - Gunakan pencarian dan kategori untuk menemukan tautan.
 
 PENYIMPANAN
-Koleksi disimpan di penyimpanan lokal browser, bukan ditulis ke file HTML.
-Gunakan browser dan lokasi folder yang sama setiap kali membuka halaman.
-Dukungan penyimpanan untuk file lokal bergantung pada browser.
-Mode privat, penghapusan data browser, atau pemindahan file dapat menyebabkan
-koleksi tidak tersimpan atau tidak terlihat. Hindari mode privat.
-Menyalin folder ini ke komputer lain tidak ikut menyalin tautan yang ditambahkan.
+Ada dua mode penyimpanan. Status mode yang sedang aktif terlihat di kiri bawah halaman.
+
+1. MODE DATABASE NEON (disarankan — semua perubahan tersimpan)
+   - Pasang Node.js 18+, lalu jalankan: npm install dan npm start.
+   - Sambungkan database Neon: salin .env.example menjadi .env, lalu isi
+     DATABASE_URL dengan connection string dari proyek Neon Anda.
+   - Buka halaman melalui server (misalnya http://localhost:3000).
+   - Semua penambahan, pengubahan, dan penghapusan langsung tersimpan di database.
+   - Tanpa DATABASE_URL, server menyimpan data di data/links.json.
+   - Saat pertama tersambung, koleksi yang ada di browser otomatis disalin ke database.
+
+2. MODE BROWSER (tanpa server, seperti versi sebelumnya)
+   - Buka index.html langsung di browser.
+   - Koleksi disimpan di penyimpanan lokal browser (localStorage).
+   - Mode privat, penghapusan data browser, atau pemindahan file dapat
+     menyebabkan koleksi tidak tersimpan atau tidak terlihat.
 
 INTERNET
 Halaman koleksi dapat dibuka tanpa internet. Font menggunakan font cadangan

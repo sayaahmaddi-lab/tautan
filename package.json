@@ -1,0 +1,16 @@
+{
+  "name": "tautan",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Koleksi tautan pribadi dengan penyimpanan database Neon Postgres",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "pg": "^8.13.0"
+  }
+}
