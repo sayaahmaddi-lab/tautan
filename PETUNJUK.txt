@@ -1,0 +1,31 @@
+TAUTAN — VERSI KOMPUTER PRIBADI
+
+CARA MEMBUKA
+1. Ekstrak seluruh isi ZIP ini (klik kanan > Extract All / Ekstrak Semua).
+2. Buka folder hasil ekstrak.
+3. Klik dua kali index.html. Halaman akan terbuka di browser.
+   Jika perlu, klik kanan > Buka dengan > Google Chrome / Microsoft Edge / Firefox.
+
+Tidak memerlukan GitHub, Node.js, atau server.
+Jangan membuka HTML langsung dari dalam ZIP.
+Simpan index.html, links.css, dan links.js di folder yang sama.
+Anda boleh membuat shortcut index.html di Desktop.
+
+CARA MENGGUNAKAN
+- Klik Tambah tautan untuk menyimpan alamat website.
+- Klik bintang untuk menandai favorit.
+- Klik tombol tiga titik pada kartu untuk mengedit atau menghapus.
+- Gunakan pencarian dan kategori untuk menemukan tautan.
+
+PENYIMPANAN
+Koleksi disimpan di penyimpanan lokal browser, bukan ditulis ke file HTML.
+Gunakan browser dan lokasi folder yang sama setiap kali membuka halaman.
+Dukungan penyimpanan untuk file lokal bergantung pada browser.
+Mode privat, penghapusan data browser, atau pemindahan file dapat menyebabkan
+koleksi tidak tersimpan atau tidak terlihat. Hindari mode privat.
+Menyalin folder ini ke komputer lain tidak ikut menyalin tautan yang ditambahkan.
+
+INTERNET
+Halaman koleksi dapat dibuka tanpa internet. Font menggunakan font cadangan
+saat offline. Internet tetap dibutuhkan untuk membuka website tujuan.
+Versi ini memakai tautan portal SIPD resmi, bukan dashboard API SIPD server.
