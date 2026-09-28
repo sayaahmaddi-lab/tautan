@@ -36,8 +36,8 @@ seperti versi lama.
 > File `.env` sudah masuk `.gitignore` — connection string tidak pernah
 > di-commit ke git.
 
-Pada kunjungan pertama server membuat tabel `links` dan mengisi 8 tautan
-bawaan. Perubahan berikutnya (tambah/edit/favorit/hapus) langsung ditulis ke
+Pada kunjungan pertama server membuat tabel `links` dan mengisi 7 tautan
+data awal (lihat `lib/seed.js`). Perubahan berikutnya (tambah/edit/favorit/hapus) langsung ditulis ke
 Neon, jadi koleksi tetap sama di semua perangkat dan browser.
 
 ## Tanpa Neon (fallback)

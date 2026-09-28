@@ -7,14 +7,13 @@ const categories = [
   {name:'Lainnya',color:'#7d9e92',bg:'#edf5f1'}
 ];
 const initial = [
- ['Google Drive','https://drive.google.com','Simpan, kelola, dan bagikan semua dokumen penting Anda.','Produktivitas',true,'△','#edf6f0','#68a78b'],
- ['Notion','https://www.notion.so','Ruang untuk catatan, ide, dan rencana besar berikutnya.','Produktivitas',true,'N','#f1f1f3','#33343b'],
- ['Gmail','https://mail.google.com','Semua percakapan dan email penting dalam satu kotak masuk.','Pekerjaan',true,'M','#fceeee','#d27878'],
- ['Figma','https://www.figma.com','Dari ide menjadi desain. Tempat berkolaborasi dan berkreasi.','Pekerjaan',false,'◈','#f1edfc','#9b79d0'],
- ['YouTube','https://www.youtube.com','Tutorial, pengetahuan baru, dan sedikit hiburan.','Belajar',false,'▶','#fff0ef','#de7272'],
- ['Pinterest','https://www.pinterest.com','Kumpulkan inspirasi visual untuk proyek Anda berikutnya.','Inspirasi',true,'P','#fcedf0','#c96e85'],
- ['ChatGPT','https://chatgpt.com','Teman bertukar ide, mencari jawaban, dan belajar hal baru.','Produktivitas',false,'✳','#eaf5f0','#69a68d'],
- ['SIPD Indonesia','https://sipd.go.id','Buka portal resmi Sistem Informasi Pemerintahan Daerah.','Pekerjaan',false,'▥','#edf2fb','#7897c9']
+ ['panel aceh tengah','https://panel.acehcms.id/manage/domain/pengguna/daftar/d5297d74-b00c-560c-8b70-06ec15f5013f','halaman panel aceh cms','Pekerjaan',false,'','',''],
+ ['mail go id','https://surel.mail.go.id/mailgoid/','mail pemerintahan','Pekerjaan',false,'','',''],
+ ['domain go id','https://domain.go.id/','domain go id','Pekerjaan',false,'','',''],
+ ['catatan pekerjaan','https://catatan-pekerjaan-27yy.vercel.app/','catatan pekerjaan','Produktivitas',false,'','',''],
+ ['catatan tugas','https://catatan-pekerjaan-27yy.vercel.app/tugas','catatan tugas','Produktivitas',false,'','',''],
+ ['sikonkep','https://sikonkep.vercel.app/','aplikasi sikonkep','Pekerjaan',false,'','',''],
+ ['download twit video','https://x2twitter.com/id3','download video twit','Lainnya',false,'','','']
 ].map((x,i)=>({id:'default-'+i,title:x[0],url:x[1],description:x[2],category:x[3],favorite:x[4],icon:x[5],bg:x[6],color:x[7],created:Date.now()-i*1000}));
 const key='tautan-collection-v1';
 let links=initial, storageFailed=false;
