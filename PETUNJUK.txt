@@ -14,6 +14,7 @@ Anda boleh membuat shortcut index.html di Desktop.
 CARA MENGGUNAKAN
 - Klik Tambah tautan untuk menyimpan alamat website.
 - Klik bintang untuk menandai favorit.
+- Klik di mana saja pada kartu untuk membuka tautan tersebut.
 - Klik tombol tiga titik pada kartu untuk mengedit atau menghapus.
 - Gunakan pencarian dan kategori untuk menemukan tautan.
 
