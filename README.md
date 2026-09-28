@@ -1,11 +1,10 @@
 # tautan
 
-Koleksi tautan pribadi — aplikasi web statis (HTML/CSS/JS) dengan backend kecil
-yang menyimpan **semua perubahan** (tambah, edit, favorit, hapus) ke database
-**Neon** (Serverless Postgres). Jika database belum dikonfigurasi, server
-otomatis memakai penyimpanan file lokal, dan bila dibuka tanpa server
-(klik dua kali `index.html`), data tetap disimpan di `localStorage` browser
-seperti versi lama.
+Koleksi tautan pribadi — aplikasi web (HTML/CSS/JS) dengan backend yang memuat
+dan menyimpan **semua data dan perubahan** (tambah, edit, favorit, hapus) hanya
+ke database **Neon** (Serverless Postgres). Aplikasi tidak menggunakan
+`localStorage` atau penyimpanan file sebagai fallback. Database Neon harus
+tersedia agar koleksi dapat digunakan.
 
 ## Menjalankan dengan database Neon
 
@@ -40,20 +39,13 @@ Pada kunjungan pertama server membuat tabel `links` dan mengisi 7 tautan
 data awal (lihat `lib/seed.js`). Perubahan berikutnya (tambah/edit/favorit/hapus) langsung ditulis ke
 Neon, jadi koleksi tetap sama di semua perangkat dan browser.
 
-## Tanpa Neon (fallback)
+## Database wajib
 
-Jika `NEON_DATABASE_URL` kosong atau tidak bisa dihubungi, server tetap jalan
-dengan penyimpanan file `data/links.json` (status sidebar: *“Tersimpan di
-server lokal”*). Cukup isi `.env` lalu restart `npm start` — data di file
-otomatis ter-dorong ke Neon pada kunjungan berikutnya oleh halaman web
-(link yang belum ada di server diunggah saat halaman dibuka).
-
-## Mode tanpa server (versi lama)
-
-`index.html` masih bisa dibuka langsung tanpa server. Dalam mode ini semua
-perubahan disimpan di `localStorage` browser seperti sebelumnya — hanya
-berlaku di browser tersebut. Saat halaman dibuka lewat server nanti, koleksi
-lokal otomatis disinkronkan ke database.
+`NEON_DATABASE_URL` (atau `DATABASE_URL`) wajib tersedia pada server lokal dan
+sebagai environment variable di Vercel. Jika database belum dikonfigurasi atau
+tidak dapat dihubungi, aplikasi gagal memuat/menyimpan data dan tidak beralih
+ke penyimpanan lain. Frontend harus diakses melalui server karena semua koleksi
+dimuat dari endpoint `/api/links`.
 
 ## API
 
@@ -96,8 +88,8 @@ index.html      — halaman aplikasi
 links.css       — gaya
 links.js        — logika frontend + sinkronisasi API
 server.js       — server Express (API + file statis)
-lib/            — store Neon (pg), store file fallback, validasi, seed
-data/           — penyimpanan fallback (di-gitignore)
+lib/            — store Neon (pg), validasi, dan seed
+api/            — endpoint serverless yang membaca/menulis Neon
 .env            — NEON_DATABASE_URL (di-gitignore)
 ```
 

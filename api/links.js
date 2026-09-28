@@ -6,8 +6,7 @@ module.exports = async (req, res) => {
   try {
     if (req.method === 'GET') {
       const s = await store();
-      // Belum ada NEON_DATABASE_URL di Vercel → biarkan frontend memakai mode lokal.
-      if (!s) return res.status(200).json({ storage: 'unavailable', links: null });
+      if (!s) return res.status(503).json({ error: 'NEON_DATABASE_URL belum diatur di Vercel.' });
       return res.status(200).json({ storage: s.kind, links: await s.list() });
     }
     if (req.method === 'POST') {

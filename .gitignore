@@ -4,5 +4,5 @@ node_modules/
 # Kredensial database (jangan pernah di-commit)
 .env
 
-# Penyimpanan fallback saat Neon belum dikonfigurasi
+# Folder data lama; penyimpanan aktif hanya menggunakan Neon
 data/

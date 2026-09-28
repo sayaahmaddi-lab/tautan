@@ -1,15 +1,9 @@
-TAUTAN — VERSI KOMPUTER PRIBADI
+TAUTAN — APLIKASI KOLEKSI TAUTAN
 
 CARA MEMBUKA
-1. Ekstrak seluruh isi ZIP ini (klik kanan > Extract All / Ekstrak Semua).
-2. Buka folder hasil ekstrak.
-3. Klik dua kali index.html. Halaman akan terbuka di browser.
-   Jika perlu, klik kanan > Buka dengan > Google Chrome / Microsoft Edge / Firefox.
-
-Tidak memerlukan GitHub, Node.js, atau server.
-Jangan membuka HTML langsung dari dalam ZIP.
-Simpan index.html, links.css, dan links.js di folder yang sama.
-Anda boleh membuat shortcut index.html di Desktop.
+Buka alamat deployment aplikasi melalui browser, atau jalankan server sesuai
+petunjuk di README.md. Aplikasi harus diakses melalui server; membuka
+index.html langsung dari file tidak memuat koleksi.
 
 CARA MENGGUNAKAN
 - Klik Tambah tautan untuk menyimpan alamat website.
@@ -18,20 +12,11 @@ CARA MENGGUNAKAN
 - Gunakan pencarian dan kategori untuk menemukan tautan.
 
 PENYIMPANAN
-Saat dibuka lewat server (lihat README.md), SEMUA perubahan — tambah, edit,
-favorit, dan hapus — langsung disimpan ke database Neon (Postgres).
-Tautan tetap sama di semua perangkat dan browser selama server berjalan.
-Jika NEON_DATABASE_URL belum diisi, server memakai file lokal data/links.json.
-
-Bila index.html dibuka tanpa server (klik dua kali), koleksi disimpan di
-penyimpanan lokal browser, bukan ditulis ke file HTML.
-Gunakan browser dan lokasi folder yang sama setiap kali membuka halaman.
-Mode privat, penghapusan data browser, atau pemindahan file dapat menyebabkan
-koleksi tidak tersimpan atau tidak terlihat. Hindari mode privat.
-Koleksi lokal akan otomatis ter-dorong ke database saat halaman dibuka
-lewat server berikutnya.
+Semua data koleksi dimuat dari dan disimpan ke database Neon melalui API
+/api/links. Aplikasi tidak menggunakan localStorage atau penyimpanan file.
+NEON_DATABASE_URL harus tersedia pada server lokal maupun konfigurasi Vercel.
+Jika database tidak tersedia, aplikasi tidak dapat memuat atau menyimpan tautan.
 
 INTERNET
-Halaman koleksi dapat dibuka tanpa internet. Font menggunakan font cadangan
-saat offline. Internet tetap dibutuhkan untuk membuka website tujuan.
-Versi ini memakai tautan portal SIPD resmi, bukan dashboard API SIPD server.
+Koneksi internet diperlukan untuk mengakses aplikasi, database, dan website
+tujuan yang tersimpan.
