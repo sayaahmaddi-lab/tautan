@@ -18,12 +18,18 @@ CARA MENGGUNAKAN
 - Gunakan pencarian dan kategori untuk menemukan tautan.
 
 PENYIMPANAN
-Koleksi disimpan di penyimpanan lokal browser, bukan ditulis ke file HTML.
+Saat dibuka lewat server (lihat README.md), SEMUA perubahan — tambah, edit,
+favorit, dan hapus — langsung disimpan ke database Neon (Postgres).
+Tautan tetap sama di semua perangkat dan browser selama server berjalan.
+Jika NEON_DATABASE_URL belum diisi, server memakai file lokal data/links.json.
+
+Bila index.html dibuka tanpa server (klik dua kali), koleksi disimpan di
+penyimpanan lokal browser, bukan ditulis ke file HTML.
 Gunakan browser dan lokasi folder yang sama setiap kali membuka halaman.
-Dukungan penyimpanan untuk file lokal bergantung pada browser.
 Mode privat, penghapusan data browser, atau pemindahan file dapat menyebabkan
 koleksi tidak tersimpan atau tidak terlihat. Hindari mode privat.
-Menyalin folder ini ke komputer lain tidak ikut menyalin tautan yang ditambahkan.
+Koleksi lokal akan otomatis ter-dorong ke database saat halaman dibuka
+lewat server berikutnya.
 
 INTERNET
 Halaman koleksi dapat dibuka tanpa internet. Font menggunakan font cadangan

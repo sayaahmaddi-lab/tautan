@@ -1,0 +1,8 @@
+# Dependensi
+node_modules/
+
+# Kredensial database (jangan pernah di-commit)
+.env
+
+# Penyimpanan fallback saat Neon belum dikonfigurasi
+data/
