@@ -1,15 +1,10 @@
-TAUTAN — VERSI KOMPUTER PRIBADI
+TAUTAN — VERSI DATABASE NEON
 
 CARA MEMBUKA
-1. Ekstrak seluruh isi ZIP ini (klik kanan > Extract All / Ekstrak Semua).
-2. Buka folder hasil ekstrak.
-3. Klik dua kali index.html. Halaman akan terbuka di browser.
-   Jika perlu, klik kanan > Buka dengan > Google Chrome / Microsoft Edge / Firefox.
-
-Tidak memerlukan GitHub, Node.js, atau server.
-Jangan membuka HTML langsung dari dalam ZIP.
-Simpan index.html, links.css, dan links.js di folder yang sama.
-Anda boleh membuat shortcut index.html di Desktop.
+Aplikasi ini hanya bekerja lewat server/aplikasi web yang terhubung ke database
+Neon. Buka alamatnya di browser (contoh: https://tautan-rho.vercel.app).
+Membuka index.html langsung dari folder (klik dua kali) TIDAK lagi menampilkan
+atau menyimpan koleksi, karena tidak ada penyimpanan di browser.
 
 CARA MENGGUNAKAN
 - Klik Tambah tautan untuk menyimpan alamat website.
@@ -18,20 +13,20 @@ CARA MENGGUNAKAN
 - Gunakan pencarian dan kategori untuk menemukan tautan.
 
 PENYIMPANAN
-Saat dibuka lewat server (lihat README.md), SEMUA perubahan — tambah, edit,
-favorit, dan hapus — langsung disimpan ke database Neon (Postgres).
-Tautan tetap sama di semua perangkat dan browser selama server berjalan.
-Jika NEON_DATABASE_URL belum diisi, server memakai file lokal data/links.json.
+Database Neon (Postgres) adalah SATU-SATUNYA penyimpanan.
+Semua perubahan — tambah, edit, favorit, dan hapus — langsung dikirim ke
+database Neon melalui API /api/links. Halaman hanya membaca data dari API
+tersebut; tidak ada data yang ditulis ke localStorage/sessionStorage browser.
+Tautan jadi sama di semua perangkat dan browser.
 
-Bila index.html dibuka tanpa server (klik dua kali), koleksi disimpan di
-penyimpanan lokal browser, bukan ditulis ke file HTML.
-Gunakan browser dan lokasi folder yang sama setiap kali membuka halaman.
-Mode privat, penghapusan data browser, atau pemindahan file dapat menyebabkan
-koleksi tidak tersimpan atau tidak terlihat. Hindari mode privat.
-Koleksi lokal akan otomatis ter-dorong ke database saat halaman dibuka
-lewat server berikutnya.
+Status di sidebar menunjukkan keadaan penyimpanan:
+- "Memuat dari database Neon…"  → halaman sedang mengambil data.
+- "Tersimpan di database Neon"  → semua perubahan masuk ke database Neon.
+- "Database Neon tidak terhubung" → data tidak dapat dimuat; periksa
+  NEON_DATABASE_URL pada environment server/Vercel, lalu muat ulang halaman.
+  Selama itu koleksi dibiarkan kosong — tidak ada data contoh dan tidak ada
+  penyimpanan di browser.
 
 INTERNET
-Halaman koleksi dapat dibuka tanpa internet. Font menggunakan font cadangan
-saat offline. Internet tetap dibutuhkan untuk membuka website tujuan.
-Versi ini memakai tautan portal SIPD resmi, bukan dashboard API SIPD server.
+Internet dibutuhkan untuk memuat dan menyimpan koleksi (database Neon) serta
+untuk membuka website tujuan.

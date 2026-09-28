@@ -1,11 +1,15 @@
 # tautan
 
-Koleksi tautan pribadi — aplikasi web statis (HTML/CSS/JS) dengan backend kecil
-yang menyimpan **semua perubahan** (tambah, edit, favorit, hapus) ke database
-**Neon** (Serverless Postgres). Jika database belum dikonfigurasi, server
-otomatis memakai penyimpanan file lokal, dan bila dibuka tanpa server
-(klik dua kali `index.html`), data tetap disimpan di `localStorage` browser
-seperti versi lama.
+Koleksi tautan pribadi — aplikasi web (HTML/CSS/JS) dengan backend kecil yang
+menyimpan **semua perubahan** (tambah, edit, favorit, hapus) ke database
+**Neon** (Serverless Postgres).
+
+**Database Neon adalah satu-satunya penyimpanan.** Tidak ada fallback ke
+`localStorage`/`sessionStorage` browser, tidak ada data contoh bawaan di
+frontend, dan tidak ada file penyimpanan lokal. Halaman selalu membaca koleksi
+dari `GET /api/links`. Bila API/database tidak tersedia, aplikasi menampilkan
+pesan kesalahan dan membiarkan koleksi kosong — bukan diam-diam menyimpan di
+browser.
 
 ## Menjalankan dengan database Neon
 
@@ -30,37 +34,49 @@ seperti versi lama.
    npm start
    ```
 
-5. Buka <http://localhost:3000>. Status di sidebar akan berubah menjadi
+5. Buka <http://localhost:3000>. Status di sidebar akan berbunyi
    **“Tersimpan di database Neon”**.
 
 > File `.env` sudah masuk `.gitignore` — connection string tidak pernah
 > di-commit ke git.
 
 Pada kunjungan pertama server membuat tabel `links` dan mengisi 7 tautan
-data awal (lihat `lib/seed.js`). Perubahan berikutnya (tambah/edit/favorit/hapus) langsung ditulis ke
-Neon, jadi koleksi tetap sama di semua perangkat dan browser.
+data awal (lihat `lib/seed.js`). Perubahan berikutnya (tambah/edit/favorit/hapus)
+langsung ditulis ke Neon, jadi koleksi tetap sama di semua perangkat dan browser.
 
-## Tanpa Neon (fallback)
+## Hanya Neon — tanpa fallback
 
-Jika `NEON_DATABASE_URL` kosong atau tidak bisa dihubungi, server tetap jalan
-dengan penyimpanan file `data/links.json` (status sidebar: *“Tersimpan di
-server lokal”*). Cukup isi `.env` lalu restart `npm start` — data di file
-otomatis ter-dorong ke Neon pada kunjungan berikutnya oleh halaman web
-(link yang belum ada di server diunggah saat halaman dibuka).
+* `lib/store.js` (server lokal) **hanya** membuat store Neon. Bila
+  `NEON_DATABASE_URL`/`DATABASE_URL` kosong atau koneksi gagal, `npm start`
+  berhenti dengan pesan jelas (`Gagal memulai server: …`).
+* `api/links.js` (Vercel serverless) memakai driver HTTP Neon. Bila
+  `NEON_DATABASE_URL` belum diatur di Vercel, endpoint mengembalikan
+  `{"storage":"unavailable","links":null}` dan halaman menampilkan pesan
+  kesalahan — tanpa menulis apa pun di browser.
+* `index.html` **wajib** dibuka lewat server/Vercel. Membuka file HTML langsung
+  dari disk tidak lagi menyimpan atau menampilkan data.
 
-## Mode tanpa server (versi lama)
+## Deployment Vercel
 
-`index.html` masih bisa dibuka langsung tanpa server. Dalam mode ini semua
-perubahan disimpan di `localStorage` browser seperti sebelumnya — hanya
-berlaku di browser tersebut. Saat halaman dibuka lewat server nanti, koleksi
-lokal otomatis disinkronkan ke database.
+1. Import repositori ini di Vercel (framework: *Other*, tanpa build command).
+2. Tambahkan Environment Variable `NEON_DATABASE_URL` (connection string
+   *pooled* dari Neon) untuk environment **Production** dan **Preview**.
+3. Deploy. Verifikasi:
+
+   ```bash
+   curl -s https://<domain-anda>/api/links | head -c 200
+   # → {"storage":"neon","links":[…]}
+   ```
+
+Selama `NEON_DATABASE_URL` belum diisi, `/api/links` mengembalikan
+`storage: "unavailable"` dan antarmuka menampilkan kesalahan pemuatan.
 
 ## API
 
 | Method   | Endpoint         | Keterangan                       |
 | -------- | ---------------- | -------------------------------- |
 | `GET`    | `/api/health`    | Cek server + jenis penyimpanan   |
-| `GET`    | `/api/links`     | Daftar semua tautan              |
+| `GET`    | `/api/links`     | Daftar semua tautan dari Neon    |
 | `GET`    | `/api/links/:id` | Satu tautan                      |
 | `POST`   | `/api/links`     | Tambah tautan                    |
 | `PUT`    | `/api/links/:id` | Perbarui tautan (partial aman)   |
@@ -94,16 +110,17 @@ tanpa tool migrasi tambahan.
 ```
 index.html      — halaman aplikasi
 links.css       — gaya
-links.js        — logika frontend + sinkronisasi API
+links.js        — logika frontend; data hanya dari GET /api/links (tanpa localStorage)
 server.js       — server Express (API + file statis)
-lib/            — store Neon (pg), store file fallback, validasi, seed
-data/           — penyimpanan fallback (di-gitignore)
+api/            — serverless function Vercel (/api/links, /api/links/[id], /api/health)
+lib/            — store Neon (pg & driver HTTP), validasi, seed, loader .env
 .env            — NEON_DATABASE_URL (di-gitignore)
 ```
 
 ## Perintah
 
 ```bash
-npm start   # jalankan server
-npm run dev # jalankan dengan auto-reload (node --watch)
+npm start     # jalankan server
+npm run dev   # jalankan dengan auto-reload (node --watch)
+npm run cek-db # uji koneksi ke database Neon
 ```
