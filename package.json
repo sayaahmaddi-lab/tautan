@@ -5,7 +5,8 @@
   "description": "Koleksi tautan pribadi dengan penyimpanan database Neon Postgres",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test:db": "node scripts/db-smoke.mjs"
   },
   "engines": {
     "node": ">=18"

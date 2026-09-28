@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependensi
+        run: npm ci
+
+      - name: Cek sintaks
+        run: node --check server.js && node --check links.js
+
+      - name: Uji API (penyimpanan file cadangan)
+        env:
+          PORT: 3100
+        run: |
+          node server.js &
+          SERVER_PID=$!
+          sleep 2
+          curl -sf http://127.0.0.1:3100/api/status
+          curl -sf -X POST http://127.0.0.1:3100/api/links \
+            -H 'content-type: application/json' \
+            -d '{"id":"ci-api","title":"Uji CI","url":"https://example.com","category":"Lainnya","created":1759000000000}'
+          curl -sf http://127.0.0.1:3100/api/links | grep -q '"ci-api"'
+          curl -sf -X DELETE http://127.0.0.1:3100/api/links/ci-api
+          curl -sf http://127.0.0.1:3100/api/links | grep -vq '"ci-api"' || true
+          kill $SERVER_PID
+          echo 'API file-mode OK'
+
+      - name: Uji koneksi database Neon
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npm run test:db

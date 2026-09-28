@@ -19,6 +19,13 @@ Tanpa `DATABASE_URL`, data disimpan di `data/links.json` (cadangan).
 Buka `index.html` langsung di browser — memakai penyimpanan lokal browser
 (localStorage) seperti versi sebelumnya.
 
+## Pengujian
+
+- `npm run test:db` — uji koneksi + skema + CRUD ke database Neon (aman, baris uji dihapus kembali).
+- Workflow CI (`.github/workflows/ci.yml`) berjalan di setiap push: uji sintaks, uji API
+  mode file, dan uji database (aktif bila secret `DATABASE_URL` sudah diatur di
+  Settings → Secrets and variables → Actions).
+
 ## API
 
 | Method | Endpoint | Fungsi |
