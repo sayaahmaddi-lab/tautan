@@ -1,4 +1,6 @@
- :root {
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Plus+Jakarta+Sans:wght@400;500;600;650;700;750;800&display=swap');
+
+:root {
   font-family: 'DM Sans', Inter, system-ui, sans-serif;
   color: #272a36;
   background: #f8f9fb;
@@ -49,6 +51,7 @@ kbd { padding: 2px 5px; border: 1px solid #eaeaf0; border-radius: 3px; font-size
 .chip { padding: 7px 12px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: #9496a5; font-size: 10px; }
 .chip.active { border-color: #e5ddf5; background: #eeeafa; color: #8267c4; }
 .chip:hover { border-color: #bfb2e3; }
+.load-note { margin: 0 0 18px; padding: 11px 14px; border: 1px solid #ecd9b6; border-radius: 8px; background: #fdf7ea; color: #8a7440; font-size: 11px; line-height: 1.7; }
 .cards { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch; gap: 14px; }
 .card { min-width: 0; padding: 15px 15px 0; border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: box-shadow .2s, border-color .2s, transform .2s; }
 .card:hover { transform: translateY(-2px); border-color: #cec3ec; box-shadow: 0 6px 20px #33266a08; }
@@ -127,7 +130,6 @@ form small { display: block; margin-top: 6px; color: #999; font-size: 10px; }
   .search { grid-column: 1 / -1; }
   .toolbar select { height: 38px; padding: 0 9px; font-size: 9px; }
   .chips { gap: 6px; margin: 15px 0 18px; }
-  .chip { padding: 6px 9px; }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .card { padding: 12px 12px 0; }
   .card h3 { font-size: 11px; }
