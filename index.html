@@ -1,20 +1,84 @@
 <!doctype html>
 <html lang="id">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f7f8fa"><meta name="description" content="Ruang pribadi untuk menyimpan dan menemukan tautan favorit Anda."><title>Tautan — Ruang digital Anda</title><link rel="stylesheet" href="links.css"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8fa">
+  <meta name="description" content="Ruang pribadi untuk menyimpan dan menemukan tautan favorit Anda.">
+  <title>Tautan — Koleksi tautan Anda</title>
+  <link rel="stylesheet" href="links.css">
+</head>
 <body>
-<aside class="sidebar">
-<a class="brand" href="./"><span class="brand-icon">↗</span> tautan<span class="brand-dot">.</span></a>
-<div class="workspace"><span class="avatar">R</span><div><strong>Ruang pribadi</strong><small>Koleksi tautan Anda</small></div><span class="workspace-lock">♧</span></div>
-<p class="nav-label">WORKSPACE</p><nav id="main-nav"><button class="nav-button active" data-view="all"><span>▦</span> Semua tautan <small id="all-count"></small></button><button class="nav-button" data-view="favorite"><span>☆</span> Favorit <small id="favorite-count"></small></button><button class="nav-button" data-view="recent"><span>◷</span> Baru ditambahkan</button></nav>
-<div class="category-label"><p class="nav-label">KATEGORI</p><span>⌘</span></div><nav id="categories"></nav>
-<div class="sidebar-tip"><span>✧</span><strong>Lebih rapi, lebih produktif.</strong><p>Simpan tautan penting di satu tempat. Temukan saat Anda butuhkan.</p><div class="tip-art"><i></i><i></i><i></i><b>↗</b></div></div>
-<div class="sidebar-bottom"><span class="status-dot"></span> <span id="storage-status">Tersimpan di browser Anda</span> <span id="storage-hint" title="Data tersimpan hanya di perangkat dan browser ini.">ⓘ</span></div>
-</aside>
-<div class="main-shell"><header class="topbar"><div><span class="breadcrumb">Workspace</span><span class="slash">/</span><span id="breadcrumb-title">Semua tautan</span></div><div class="topbar-right"><span id="today"></span><span class="avatar small">R</span></div></header>
-<main><section class="page-heading"><div><div class="eyebrow">RUANG DIGITAL ANDA</div><h1>Semua yang penting,<br>di satu tempat<span>.</span></h1><p>Jalan pintas menuju halaman yang Anda butuhkan setiap hari.</p></div><button class="primary" id="add-link"><span>＋</span> Tambah tautan</button></section>
-<section class="overview"><div><span class="stat-icon purple">↗</span><div><strong id="stat-total">0</strong><span>Tautan tersimpan</span></div></div><div><span class="stat-icon amber">☆</span><div><strong id="stat-favorite">0</strong><span>Tautan favorit</span></div></div><div><span class="stat-icon green">▧</span><div><strong id="stat-category">0</strong><span>Kategori aktif</span></div></div><div class="overview-note"><span>✧</span><p>Sedikit mencari.<br><strong>Lebih banyak melakukan.</strong></p></div></section>
-<section class="collection"><div class="collection-title"><h2 id="collection-title">Koleksi tautan</h2><span id="result-count"></span></div><div class="toolbar"><label class="search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Cari nama, URL, atau deskripsi tautan…" aria-label="Cari tautan"><kbd>/</kbd></label><select id="sort" aria-label="Urutkan tautan"><option value="new">Terbaru ditambahkan</option><option value="az">Nama A–Z</option><option value="old">Terlama ditambahkan</option></select><div class="view-switch"><button id="grid-view" class="selected" aria-label="Tampilan kisi" aria-pressed="true">▦</button><button id="list-view" aria-label="Tampilan daftar" aria-pressed="false">☷</button></div></div><div id="filter-chips" class="chips"></div><div id="cards" class="cards"></div><div id="empty" class="empty" hidden><span>⌕</span><h3>Belum ada tautan di sini</h3><p>Coba kata kunci lain atau tambahkan tautan pertama Anda.</p><button class="primary" id="empty-add">＋ Tambah tautan</button></div></section>
-<footer><span><span class="footer-logo">↗</span> Tempat kecil untuk hal-hal penting.</span><span>Dibuat untuk hari yang lebih teratur <span class="footer-spark">✧</span></span></footer>
-</main></div>
-<dialog id="link-dialog"><form id="link-form"><div class="dialog-heading"><div><span class="eyebrow">KOLEKSI PRIBADI</span><h2 id="dialog-title">Tambah tautan</h2></div><button type="button" class="close" id="close-dialog" aria-label="Tutup">×</button></div><label>Nama tautan<input name="title" required maxlength="80" placeholder="Contoh: Google Drive"></label><label>Alamat website<input name="url" type="url" required placeholder="https://example.com"><small>Gunakan alamat yang diawali https:// atau http://.</small></label><label>Deskripsi<textarea name="description" maxlength="160" rows="3" placeholder="Untuk apa Anda menggunakan halaman ini?"></textarea></label><label>Kategori<select name="category" id="form-category"></select></label><label class="checkbox"><input name="favorite" type="checkbox"> Jadikan tautan favorit</label><p id="form-error" role="alert"></p><div class="form-actions"><button type="button" class="secondary" id="cancel-dialog">Batal</button><button type="submit" class="primary">Simpan tautan</button></div></form></dialog><div id="toast" role="status"></div><script src="links.js"></script>
-</body></html>
+  <main>
+    <section class="collection" aria-labelledby="collection-title">
+      <div class="collection-heading">
+        <div class="collection-title">
+          <h1 id="collection-title">Koleksi tautan</h1>
+          <span id="result-count" aria-live="polite"></span>
+        </div>
+        <button class="primary" id="add-link"><span>＋</span> Tambah tautan</button>
+      </div>
+
+      <div class="toolbar">
+        <label class="search">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <path d="m16 16 5 5" />
+          </svg>
+          <input id="search" type="search" placeholder="Cari nama, URL, atau deskripsi tautan…" aria-label="Cari tautan">
+          <kbd>/</kbd>
+        </label>
+        <select id="view-filter" aria-label="Filter koleksi">
+          <option value="all">Semua tautan</option>
+          <option value="favorite">Favorit</option>
+          <option value="recent">Baru ditambahkan</option>
+        </select>
+        <select id="sort" aria-label="Urutkan tautan">
+          <option value="new">Terbaru ditambahkan</option>
+          <option value="az">Nama A–Z</option>
+          <option value="old">Terlama ditambahkan</option>
+        </select>
+        <div class="view-switch" aria-label="Tampilan tautan">
+          <button id="grid-view" class="selected" aria-label="Tampilan kisi" aria-pressed="true">▦</button>
+          <button id="list-view" aria-label="Tampilan daftar" aria-pressed="false">☷</button>
+        </div>
+      </div>
+
+      <div id="filter-chips" class="chips" aria-label="Filter kategori"></div>
+      <div id="cards" class="cards"></div>
+      <div id="empty" class="empty" hidden>
+        <span>⌕</span>
+        <h2>Belum ada tautan di sini</h2>
+        <p>Coba kata kunci lain atau tambahkan tautan pertama Anda.</p>
+        <button class="primary" id="empty-add"><span>＋</span> Tambah tautan</button>
+      </div>
+    </section>
+
+    <footer>
+      <span><span class="footer-logo">↗</span> Tempat kecil untuk hal-hal penting.</span>
+      <span>Dibuat untuk hari yang lebih teratur <span class="footer-spark">✧</span></span>
+    </footer>
+  </main>
+
+  <dialog id="link-dialog">
+    <form id="link-form">
+      <div class="dialog-heading">
+        <div><span class="eyebrow">KOLEKSI PRIBADI</span><h2 id="dialog-title">Tambah tautan</h2></div>
+        <button type="button" class="close" id="close-dialog" aria-label="Tutup">×</button>
+      </div>
+      <label>Nama tautan<input name="title" required maxlength="80" placeholder="Contoh: Google Drive"></label>
+      <label>Alamat website<input name="url" type="url" required placeholder="https://example.com"><small>Gunakan alamat yang diawali https:// atau http://.</small></label>
+      <label>Deskripsi<textarea name="description" maxlength="160" rows="3" placeholder="Untuk apa Anda menggunakan halaman ini?"></textarea></label>
+      <label>Kategori<select name="category" id="form-category"></select></label>
+      <label class="checkbox"><input name="favorite" type="checkbox"> Jadikan tautan favorit</label>
+      <p id="form-error" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" class="secondary" id="cancel-dialog">Batal</button>
+        <button type="submit" class="primary">Simpan tautan</button>
+      </div>
+    </form>
+  </dialog>
+  <div id="toast" role="status"></div>
+  <script src="links.js"></script>
+</body>
+</html>
