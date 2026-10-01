@@ -21,7 +21,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 main {
   display: flex;
   flex-direction: column;
-  max-width: 1480px;
+  max-width: 1184px;
   min-height: 100vh;
   margin: 0 auto;
   padding: 48px 48px 0;
