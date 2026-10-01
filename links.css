@@ -53,7 +53,8 @@ kbd { padding: 2px 5px; border: 1px solid #eaeaf0; border-radius: 3px; font-size
 .chip:hover { border-color: #bfb2e3; }
 .load-note { margin: 0 0 18px; padding: 11px 14px; border: 1px solid #ecd9b6; border-radius: 8px; background: #fdf7ea; color: #8a7440; font-size: 11px; line-height: 1.7; }
 .cards { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); align-items: stretch; gap: 14px; }
-.card { position: relative; isolation: isolate; min-width: 0; padding: 15px 15px 0; border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: box-shadow .2s, border-color .2s, transform .2s; }
+/* Ringkas ruang vertikal tanpa mengecilkan teks; deskripsi tetap tumbuh alami. */
+.card { position: relative; isolation: isolate; min-width: 0; padding: 11px 15px 0; border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: box-shadow .2s, border-color .2s, transform .2s; }
 .card:hover { transform: translateY(-2px); border-color: #cec3ec; box-shadow: 0 6px 20px #33266a08; }
 /* Perluas area klik tautan ke seluruh kartu. */
 .card-link::after {
@@ -75,32 +76,32 @@ kbd { padding: 2px 5px; border: 1px solid #eaeaf0; border-radius: 3px; font-size
   position: relative;
   z-index: 2;
 }
-.card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
-.site-icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 9px; font: 700 17px 'Plus Jakarta Sans', sans-serif; }
+.card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.site-icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 9px; font: 700 17px 'Plus Jakarta Sans', sans-serif; }
 .card-tools { display: flex; align-items: center; gap: 6px; }
-.icon-button { padding: 2px; border: 0; background: transparent; color: #c7c8d1; font-size: 17px; line-height: 1; }
+.icon-button { display: grid; width: 28px; height: 28px; flex: 0 0 28px; place-items: center; padding: 0; border: 0; background: transparent; color: #c7c8d1; font-size: 17px; line-height: 1; }
 .icon-button.favorited { color: #d9b567; }
 .icon-button:hover { color: var(--purple); }
 .card h3 { margin: 0 0 4px; font: 700 12px 'Plus Jakarta Sans', 'DM Sans', sans-serif; }
 .card .domain { display: block; overflow: hidden; color: #a6a7b3; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.card p { min-height: 28px; margin: 9px 0 13px; color: #9699a6; font-size: 10px; line-height: 1.6; }
-.card-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; padding: 9px 0; border-top: 1px solid #f1f1f5; }
+.card p { min-height: 20px; margin: 5px 0 7px; color: #9699a6; font-size: 10px; line-height: 1.6; }
+.card-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; padding: 5px 0; border-top: 1px solid #f1f1f5; }
 .badge { padding: 3px 6px; border-radius: 4px; background: var(--badge-bg); color: var(--badge-color); font-size: 9px; white-space: nowrap; }
 .open-link { display: flex; align-items: center; gap: 7px; margin-left: auto; color: #999baa; font-size: 10px; white-space: nowrap; }
 .open-link:hover { color: var(--purple); }
 .open-link span { font-size: 13px; }
-.add-card { display: flex; min-height: 175px; flex-direction: column; align-items: center; justify-content: center; gap: 9px; border: 1px dashed #dcdde7; border-radius: 10px; background: transparent; color: #9591aa; }
+.add-card { display: flex; min-height: 140px; flex-direction: column; align-items: center; justify-content: center; gap: 9px; border: 1px dashed #dcdde7; border-radius: 10px; background: transparent; color: #9591aa; }
 .add-card:hover { border-color: #bcb0dc; background: #f1eef9; }
 .add-card > span { display: grid; width: 36px; height: 36px; place-items: center; margin-bottom: 3px; border-radius: 50%; background: #eeecf4; color: #a799c2; font-size: 23px; }
 .add-card strong { font-size: 11px; font-weight: 500; }
 .add-card small { color: #aeabb9; font-size: 10px; }
 .cards.list { grid-template-columns: 1fr; }
-.cards.list .card { display: grid; grid-template-columns: 70px 1fr 1.5fr 170px; align-items: center; gap: 12px; padding: 11px 16px; }
+.cards.list .card { display: grid; grid-template-columns: 70px 1fr 1.5fr 170px; align-items: center; gap: 12px; padding: 8px 16px; }
 .cards.list .card-top { margin: 0; }
 .cards.list .card-tools { display: none; }
 .cards.list .card p { min-height: 0; margin: 0; }
-.cards.list .card-bottom { border: 0; }
-.cards.list .add-card { min-height: 80px; }
+.cards.list .card-bottom { padding: 5px 0; border: 0; }
+.cards.list .add-card { min-height: 64px; }
 .cards.list .add-card > span, .cards.list .add-card small { display: none; }
 .empty { padding: 45px 20px; color: #999; text-align: center; }
 .empty > span { font-size: 40px; }
@@ -133,8 +134,6 @@ form small { display: block; margin-top: 6px; color: #999; font-size: 10px; }
 
 @media (min-width: 1450px) {
   main { padding-top: 56px; }
-  .card { padding-top: 18px; }
-  .card p { margin-bottom: 18px; }
 }
 @media (max-width: 1100px) {
   main { padding: 36px 30px 0; }
@@ -151,21 +150,22 @@ form small { display: block; margin-top: 6px; color: #999; font-size: 10px; }
   .toolbar select { height: 38px; padding: 0 9px; font-size: 9px; }
   .chips { gap: 6px; margin: 15px 0 18px; }
   .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .card { padding: 12px 12px 0; }
+  .card { padding: 8px 12px 0; }
   .card h3 { font-size: 11px; }
-  .card p { min-height: 24px; margin: 7px 0 10px; font-size: 9px; line-height: 1.55; }
-  .card-top { margin-bottom: 8px; }
+  .card p { min-height: 18px; margin: 3px 0 5px; font-size: 9px; line-height: 1.55; }
+  .card-top { margin-bottom: 4px; }
   .site-icon { width: 28px; height: 28px; font-size: 15px; }
   .card-tools { gap: 3px; }
   .icon-button { font-size: 16px; }
-  .card-bottom { gap: 4px; padding: 7px 0; }
+  .card-bottom { gap: 4px; padding: 4px 0; }
   .badge { font-size: 8px; }
   .open-link { gap: 3px; font-size: 9px; }
   footer { margin-top: 24px; }
   footer > span:last-child { display: none; }
-  .cards.list .card { grid-template-columns: 40px 1fr; gap: 8px; padding: 12px; }
-  .cards.list .card-bottom { grid-column: 1 / -1; padding: 5px 0; }
-  .add-card { min-height: 165px; }
+  .cards.list .card { grid-template-columns: 40px 1fr; column-gap: 8px; row-gap: 4px; padding: 8px; }
+  .cards.list .card-bottom { grid-column: 1 / -1; padding: 3px 0; }
+  .add-card { min-height: 130px; }
+  .cards.list .add-card { min-height: 64px; }
   .add-card small { font-size: 8px; }
 }
 @media (max-width: 470px) {
