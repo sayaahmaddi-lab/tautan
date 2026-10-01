@@ -71,8 +71,7 @@ kbd { padding: 2px 5px; border: 1px solid #eaeaf0; border-radius: 3px; font-size
 }
 
 /* Pastikan tombol tetap bisa diklik secara terpisah. */
-.card-tools .icon-button,
-.card .open-link {
+.card-tools .icon-button {
   position: relative;
   z-index: 2;
 }
